@@ -1,0 +1,136 @@
+//  AssessmentsPrefixHeader.pch
+//
+//  Assessments
+//
+//  Copyright (c) 2016 Internet Vision Technologies. All rights reserved.
+
+
+#ifndef AssessmentsPrefixHeader_pch
+#define AssessmentsPrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+#endif
+
+
+#define myAppDelegate [[UIApplication sharedApplication] delegate]
+
+
+#ifdef DEBUG // ---------- Debugging!
+
+//#define DLog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
+#define DLog(...) NSLog(@"%@", [NSString stringWithFormat:__VA_ARGS__])
+
+#define ALog(...) [[NSAssertionHandler currentHandler] handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding] file:[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] lineNumber:__LINE__ description:__VA_ARGS__]
+
+
+#if !defined(TICKGLOBAL)
+
+#define TICKGLOBAL
+
+
+extern NSDate *startTimeGlobal1;
+extern NSString *sMsgGlobal1;
+
+extern NSDate *startTimeGlobal2;
+extern NSString *sMsgGlobal2;
+
+extern NSDate *startTimeGlobal3;
+extern NSString *sMsgGlobal3;
+
+extern NSDate *startTimeGlobal4;
+extern NSString *sMsgGlobal4;
+
+
+// Global tick/tock 1.
+#define TICKG1(_sMsg) \
+startTimeGlobal1 = [NSDate date]; \
+sMsgGlobal1 = _sMsg; \
+DLog(@"StartG1: %@", sMsgGlobal1);
+
+#define TOCKG1(_sAltMessage) \
+DLog(@"EndG1:   %@ - %@ - Elapsed: %f", sMsgGlobal1, _sAltMessage, -[startTimeGlobal1 timeIntervalSinceNow]);
+
+
+// Global tick/tock 2.
+#define TICKG2(_sMsg) \
+startTimeGlobal2 = [NSDate date]; \
+sMsgGlobal2 = _sMsg; \
+DLog(@"StartG2: %@", sMsgGlobal2);
+
+#define TOCKG2(_sAltMessage) \
+DLog(@"EndG2:   %@ - %@ - Elapsed: %f", sMsgGlobal2, _sAltMessage, -[startTimeGlobal2 timeIntervalSinceNow]);
+
+
+// Global tick/tock 3.
+#define TICKG3(_sMsg) \
+startTimeGlobal3 = [NSDate date]; \
+sMsgGlobal3 = _sMsg; \
+DLog(@"StartG3: %@", sMsgGlobal3);
+
+#define TOCKG3(_sAltMessage) \
+DLog(@"EndG3:   %@ - %@ - Elapsed: %f", sMsgGlobal3, _sAltMessage, -[startTimeGlobal3 timeIntervalSinceNow]);
+
+
+// Global tick/tock 4.
+#define TICKG4(_sMsg) \
+startTimeGlobal4 = [NSDate date]; \
+sMsgGlobal4 = _sMsg; \
+DLog(@"StartG4: %@", sMsgGlobal4);
+
+#define TOCKG4(_sAltMessage) \
+DLog(@"EndG4:   %@ - %@ - Elapsed: %f", sMsgGlobal4, _sAltMessage, -[startTimeGlobal4 timeIntervalSinceNow]);
+
+
+// General tick/tock for local function.
+#define TICK(n,sMsg) \
+NSDate *startTime##n = [NSDate date]; \
+NSString *sMessage##n = sMsg; \
+DLog(@"Start: %@", sMessage##n);
+
+#define TOCK(n) \
+DLog(@"End:   %@ - Elapsed: %f", sMessage##n, -[startTime##n timeIntervalSinceNow]);
+
+
+#endif	// !defined(TICKGLOBAL)
+
+
+
+#else	// ---------- Not debugging!
+
+#define DLog(...)
+#ifndef NS_BLOCK_ASSERTIONS
+#define NS_BLOCK_ASSERTIONS
+#endif
+
+#define ALog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
+
+#define TICKG1(sMsg)
+#define TOCKG1(sAltMessage)
+#define TICKG2(sMsg)
+#define TOCKG2(sAltMessage)
+#define TICKG3(sMsg)
+#define TOCKG3(sAltMessage)
+#define TICKG4(sMsg)
+#define TOCKG4(sAltMessage)
+#define TICK(n,sMsg)
+#define TOCK(n)
+
+#endif
+
+
+#define ZAssert(condition, ...) do { if (!(condition)) { ALog(__VA_ARGS__); }} while(0)
+
+#endif /* AssessmentsPrefixHeader_pch */
