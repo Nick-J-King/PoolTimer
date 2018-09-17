@@ -10,25 +10,27 @@
 
 @interface ViewController : UIViewController {
 
-    BOOL    running;
-    BOOL    expired;
-    BOOL    halfTimeSounded;
+    BOOL    running;            // Whether the timer is running.
+    BOOL    expired;            // Whether the timer has expired.
+    BOOL    halfTimeSounded;    // Whether the half-time beep/vibration has sounded.
 
-    float displayTime;      // Time currently being displayed.
-
-    float startTime;
-    float currentTime;
+    float touchStartTime;
     
-    float currentDuration;
+    float fromTime;         // Time current span started.
+    float currentTime;      // Current time "now".
+    float currentDuration;  // The current duration (currentTime - fromTime).
     
-    float extraDuration;
-    float totalDuration;
+    float accumulatedDuration;  // Any accumulated time from the previous time-span (if any).
+                                // This is calculated whenever the timer is paused.
+    
+    float totalDuration;    // The total duration in seconds that have been counted.
 
-    NSTimer *myStopWatch;
+    float displayTime;      // Time currently being displayed (rounded version of 60 - totalDuration).
 
-    float oldX, oldY;
-    BOOL dragging;
+    NSTimer *myStopWatch;   // Timer used to create tick events.
 
+    float startX, startY;   // Record when tap begins to check if a swipe is performed.
+    BOOL dragging;          // Whether the ...
 }
 
 @property (strong, nonatomic) IBOutlet UILabel *timeLabel;
